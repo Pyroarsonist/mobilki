@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:fontFamily="sans-serif-black"
+    tools:context=".MainActivity">
+
+
+    <Button
+        android:id="@+id/ok"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:text="@android:string/ok"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.504"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/_priceLabel" />
+
+    <TextView
+        android:id="@+id/_currentPriceLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginLeft="32dp"
+        android:layout_marginTop="84dp"
+        android:text="Обрані ціни:"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/_currentColorLabel" />
+
+    <TextView
+        android:id="@+id/priceMin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/_currentPriceLabel"
+        app:layout_constraintEnd_toStartOf="@+id/priceMax"
+        app:layout_constraintHorizontal_bias="0.52"
+        app:layout_constraintStart_toEndOf="@+id/_currentPriceLabel"
+        app:layout_constraintTop_toBottomOf="@+id/currentColor"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/priceMax"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="52dp"
+        android:layout_marginRight="52dp"
+        android:text="3000"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/_currentPriceLabel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/currentColor"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/_currentColorLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="36dp"
+        android:text="Обраний колір:"
+        android:visibility="invisible"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/currentFlowers" />
+
+    <TextView
+        android:id="@+id/_priceLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="44dp"
+        android:text="Оберіть діапазон цін:"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/colorPickerBtn" />
+
+    <EditText
+        android:id="@+id/editFlowers"
+        android:layout_width="156dp"
+        android:layout_height="47dp"
+        android:layout_marginTop="72dp"
+        android:ems="10"
+        android:hint="Квіти"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toBottomOf="@+id/_flowerLabel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/_flowerLabel"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/colorPickerBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Оберіть колір"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editFlowers" />
+
+    <TextView
+        android:id="@+id/_flowerLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="72dp"
+        android:text="Введіть назву квітів: "
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/currentFlowers"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ваші квіти!"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ok"
+        app:layout_constraintVertical_bias="0.082" />
+
+    <org.florescu.android.rangeseekbar.RangeSeekBar
+        android:id="@+id/priceRangeSeekBar"
+        android:layout_width="154dp"
+        android:layout_height="61dp"
+        android:layout_marginTop="24dp"
+        app:absoluteMaxValue="3000"
+        app:absoluteMinValue="0"
+        app:layout_constraintBottom_toBottomOf="@+id/_priceLabel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.765"
+        app:layout_constraintStart_toEndOf="@+id/_priceLabel"
+        app:layout_constraintTop_toBottomOf="@+id/colorPickerBtn"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <View
+        android:id="@+id/currentColor"
+        android:layout_width="149dp"
+        android:layout_height="30dp"
+        android:layout_marginEnd="21dp"
+        android:layout_marginRight="21dp"
+        app:layout_constraintBottom_toBottomOf="@+id/_currentColorLabel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.991"
+        app:layout_constraintStart_toEndOf="@+id/_currentColorLabel"
+        app:layout_constraintTop_toBottomOf="@+id/currentFlowers"
+        app:layout_constraintVertical_bias="1.0"
+        android:visibility="invisible" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

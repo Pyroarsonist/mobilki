@@ -1,3 +1,13 @@
 <resources>
     <string name="app_name">Mobile</string>
+
+    <string name="defaultMinPrice">0</string>
+    <string name="defaultMaxPrice">3000</string>
+    <string name="selectedColor">Обраний колір:</string>
+    <string name="selectedPrices">Обрані ціни:</string>
+    <string name="currentFlowers">Ваші квіти!</string>
+    <string name="hintFlowers">Квіти</string>
+    <string name="enterFlowers">Введіть назву квітів:</string>
+    <string name="pickColor">Оберіть колір</string>
+    <string name="selectPricesRange">Оберіть діапазон цін</string>
 </resources>

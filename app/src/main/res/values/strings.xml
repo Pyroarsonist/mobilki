@@ -10,4 +10,5 @@
     <string name="enterFlowers">Введіть назву квітів:</string>
     <string name="pickColor">Оберіть колір</string>
     <string name="selectPricesRange">Оберіть діапазон цін</string>
+    <string name="list">Лист</string>
 </resources>

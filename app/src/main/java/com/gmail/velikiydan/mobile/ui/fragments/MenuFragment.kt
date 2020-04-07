@@ -1,75 +1,86 @@
-package com.gmail.velikiydan.mobile.fragments
+package com.gmail.velikiydan.mobile.ui.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
 import androidx.fragment.app.Fragment
-import com.gmail.velikiydan.mobile.MainActivity
+import com.gmail.velikiydan.mobile.ui.activities.MainActivity
 import com.gmail.velikiydan.mobile.R
+import com.gmail.velikiydan.mobile.data.dtos.FlowerDto
+import com.gmail.velikiydan.mobile.data.entities.FlowerEntity
+import com.gmail.velikiydan.mobile.ui.activities.FlowerListActivity
+import com.gmail.velikiydan.mobile.utils.Constant
 import com.jaygoo.widget.OnRangeChangedListener
 import com.jaygoo.widget.RangeSeekBar
+import kotlinx.android.synthetic.main.fragment_menu.*
 import yuku.ambilwarna.AmbilWarnaDialog
 
 
 class MenuFragment : Fragment() {
-    private lateinit var editFlowers: EditText
-    private lateinit var colorPickerBtn: Button
-    private lateinit var okBtn: Button
-    private lateinit var priceRangeSeekBar: RangeSeekBar
-
-    private lateinit var data: FlowerData
+    private lateinit var data: FlowerDto
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        data = FlowerData()
-        arguments?.let {
-            data = FlowerData(
-                it.getFloat("minPrice"),
-                it.getFloat("maxPrice"),
-                it.getInt("color"),
-                it.getString("flowerText", "")
-            )
-        }
+        data = FlowerDto()
+        arguments?.getParcelable<FlowerDto>(Constant.FLOWER_DTO_ARG)
+            ?.let { flowerData ->
+                this.data = flowerData
+            } ?: throw IllegalStateException("FlowerDto not found!")
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setup(view)
-        setValues()
+        updateFlowerData(data)
         createResultFragmentOnOkClick(view.context as MainActivity)
+        createFlowerListActivityOnListClick(view.context as MainActivity)
         initColorPicker()
         setFlowersOnClick()
         setRangeSeekBarListener()
     }
 
-    private fun setValues() {
-        priceRangeSeekBar.setRange(data.minPrice, data.maxPrice)
-        editFlowers.setText(data.flowerText)
-        priceRangeSeekBar.setRange(FlowerData.DEFAULT_MIN_PRICE, FlowerData.DEFAULT_MAX_PRICE)
-        priceRangeSeekBar.setProgress(data.minPrice, data.maxPrice)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        return inflater.inflate(R.layout.fragment_menu, container, false)
     }
 
-    private fun setup(v: View) {
-        editFlowers = v.findViewById(R.id.editFlowers)
-        colorPickerBtn = v.findViewById(R.id.colorPickerBtn)
-        priceRangeSeekBar = v.findViewById(R.id.priceRangeSeekBar)
-        okBtn = v.findViewById(R.id.ok)
+    private fun updateFlowerData(flowerData: FlowerDto) {
+        priceRangeSeekBar.setRange(data.minPrice, flowerData.maxPrice)
+        editFlowers.setText(flowerData.name)
+        priceRangeSeekBar.setRange(FlowerDto.DEFAULT_MIN_PRICE, FlowerDto.DEFAULT_MAX_PRICE)
+        priceRangeSeekBar.setProgress(flowerData.minPrice, flowerData.maxPrice)
     }
 
     private fun createResultFragmentOnOkClick(context: MainActivity) {
-        okBtn.setOnClickListener {
+        okButton.setOnClickListener {
+            context.flowerViewModel.insert(
+                FlowerEntity(
+                    null,
+                    data.name,
+                    data.minPrice,
+                    data.maxPrice,
+                    data.color
+                )
+            )
             context.replaceFragment(
                 ResultFragment.newInstance(
                     data
                 )
             )
+        }
+    }
 
+
+    private fun createFlowerListActivityOnListClick(context: MainActivity) {
+        listButton.setOnClickListener {
+            val intent = Intent(context, FlowerListActivity::class.java)
+            startActivity(intent)
         }
     }
 
@@ -81,12 +92,11 @@ class MenuFragment : Fragment() {
                 object : AmbilWarnaDialog.OnAmbilWarnaListener {
                     override fun onOk(dialog: AmbilWarnaDialog, color: Int) {
                         data.color = color
-                        return
                     }
 
 
                     override fun onCancel(dialog: AmbilWarnaDialog) {
-                        return
+                        // Intentionally empty.
                     }
                 })
 
@@ -98,17 +108,21 @@ class MenuFragment : Fragment() {
     private fun setFlowersOnClick() {
         editFlowers.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
+                // Intentionally empty.
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                // Intentionally empty.
             }
 
-            override fun onTextChanged(
-                s: CharSequence?, start: Int, before: Int, count: Int
-            ) {
-                data.flowerText = s.toString()
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                data.name = s.toString()
             }
         })
+    }
+
+    private fun round(num: Float): Float {
+        return ("%.2f".format(num)).toFloat()
     }
 
     private fun setRangeSeekBarListener() {
@@ -122,33 +136,25 @@ class MenuFragment : Fragment() {
                 rightValue: Float,
                 isFromUser: Boolean
             ) {
-                data.minPrice = leftValue
-                data.maxPrice = rightValue
+                data.minPrice = round(leftValue)
+                data.maxPrice = round(rightValue)
 
             }
 
             override fun onStopTrackingTouch(view: RangeSeekBar?, isLeft: Boolean) {
+                // Intentionally empty.
             }
 
         })
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_menu, container, false)
-    }
-
     companion object {
-        fun newInstance(data: FlowerData) =
-            MenuFragment().apply {
+        fun newInstance(data: FlowerDto): MenuFragment {
+            return MenuFragment().apply {
                 arguments = Bundle().apply {
-                    putFloat("minPrice", data.minPrice)
-                    putFloat("maxPrice", data.maxPrice)
-                    putInt("color", data.color)
-                    putString("flowerText", data.flowerText)
+                    putParcelable(Constant.FLOWER_DTO_ARG, data)
                 }
             }
+        }
     }
 }
